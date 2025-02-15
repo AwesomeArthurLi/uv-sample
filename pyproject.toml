@@ -1,0 +1,38 @@
+[project]
+name = "sample"
+dynamic = [
+    "version"
+]
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "lianyou.li", email = "awesomearthurli@outlook.com" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "click>=8.1.8",
+]
+
+[project.scripts]
+hello = "sample.cli:hello"
+
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "pytest>=8.3.4",
+    "pytest-cov>=6.0.0",
+    "pytest-html>=4.1.1",
+]
+lint = [
+    "ruff>=0.9.6",
+]
+
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.metadata.hooks.vcs]
