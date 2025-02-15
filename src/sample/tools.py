@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
-from functools import lru_cache
+from functools import lru_cache, wraps
 import logging
 import time
 
@@ -19,6 +19,7 @@ def timed_lru_cache(_func=None, *, seconds: int = 7000, maxsize: int = 1, typed:
         f.expiration = time.monotonic() + f.delta
         f.customized_flag = False
 
+        @wraps(f)
         def wrapped_f(*args, **kwargs):
             new_delta = kwargs.get("result_cached_seconds")
             # logging.info(f"the new delta is {new_delta}")
