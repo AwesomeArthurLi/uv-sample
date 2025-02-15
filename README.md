@@ -195,3 +195,57 @@ source = "vcs"
 [tool.hatch.build.hooks.vcs]
 version-file = "src/sample/version.py"
 ```
+
+## pytest
+
+### 日志
+
+```ini
+[pytest]
+log_cli=true
+log_level=INFO
+```
+
+### coverage
+
+```bash
+# 运行测试，并生成.coverage文件
+uv run pytest --cov
+
+# 将.coverage文件转换成html文件，并放在coverage目录中
+uv run coverage html -d coverage
+
+```
+
+### fixture
+
+fixture可以简化一些通用的操作，并对操作做清理
+
+```python
+import pytest
+import os
+from dotenv import find_dotenv, load_dotenv
+
+load_dotenv(find_dotenv())
+
+@pytest.fixture(scope="session")
+def password():
+    return os.getenv("password")
+
+@pytest.fixture(scope="session")
+def username():
+    return os.getenv("username")
+
+@pytest.fixture()
+def client(password, username):
+    return Client(username, password)
+```
+
+#### fixture的scope
+
+- Fixtures are created when first requested by a test, and are destroyed based on their scope:
+- function: the default scope, the fixture is destroyed at the end of the test.
+- class: the fixture is destroyed during teardown of the last test in the class.
+- module: the fixture is destroyed during teardown of the last test in the module.
+- package: the fixture is destroyed during teardown of the last test in the package where the fixture is defined, including sub-packages and sub-directories within it.
+- session: the fixture is destroyed at the end of the test session.
